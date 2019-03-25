@@ -2,18 +2,11 @@ import React, { Component } from "react";
 
 class Input extends Component {
   render() {
-    const { name, label, value, error, onChange } = this.props;
+    const { name, label, error, ...rest } = this.props;
     return (
       <div className="form-group">
         <label htmlFor={name}>{label}</label>
-        <input
-          id={name}
-          name={name}
-          type="text"
-          className="form-control"
-          value={value}
-          onChange={onChange}
-        />
+        <input {...rest} name={name} id={name} className="form-control" />
         {error && <div className="alert alert-danger">{error}</div>}
       </div>
     );
