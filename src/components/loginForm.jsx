@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React from "react";
 import Joi from "joi-browser";
+import Form from "./common/form";
 import Input from "./common/input";
 
-class LoginForm extends Component {
+class LoginForm extends Form {
   username = React.createRef();
   state = {
     data: {
@@ -21,45 +22,11 @@ class LoginForm extends Component {
       .label("Password")
   };
 
-  validate = () => {
-    const { error } = Joi.validate(this.state.data, this.schema, {
-      abortEarly: false
-    });
-    if (!error) return null;
-    const errors = {};
-    error.details.forEach(m => {
-      errors[m.path[0]] = m.message;
-    });
-    return errors;
-  };
-  validateProperty = ({ name, value }) => {
-    const obj = {
-      [name]: value
-    };
-    const { error } = Joi.validate(obj, { [name]: this.schema[name] });
-    return error ? error.details[0].message : null;
-  };
-  handleSubmit = e => {
-    e.preventDefault();
-    const errors = this.validate();
-    this.setState({ errors: errors || {} });
-    if (errors) {
-      return;
-    }
+  doSubmit = () => {
+    // call the server
     console.log("Submitted.");
   };
-  handleChange = ({ target: input }) => {
-    const errors = { ...this.state.errors };
-    const errorMessage = this.validateProperty(input);
-    if (errorMessage) {
-      errors[input.name] = errorMessage;
-    } else {
-      delete errors[input.name];
-    }
-    const data = { ...this.state.data };
-    data[input.name] = input.value;
-    this.setState({ data, errors });
-  };
+
   render() {
     const { data, errors } = this.state;
     return (
